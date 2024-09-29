@@ -1,0 +1,48 @@
+<% if(success && success.length) { %>
+<div
+  class="alert alert-success alert-dismissible fade show mt-3 col-10 col-md-6 offset-md-3 shadow-lg"
+  role="alert"
+  style="position: relative; animation: slideIn 0.5s ease-out"
+>
+  <i class="fa-solid fa-circle-check me-2"></i> <%= success %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+    style="position: absolute; top: 10px; right: 10px"
+  ></button>
+</div>
+<% } %> <% if(error && error.length) { %>
+<div
+  class="alert alert-danger alert-dismissible fade show mt-3 col-10 col-md-6 offset-md-3 shadow-lg"
+  role="alert"
+  style="position: relative; animation: slideIn 0.5s ease-out"
+>
+  <i class="fa-solid fa-circle-exclamation me-2"></i> <%= error %>
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+    style="position: absolute; top: 10px; right: 10px"
+  ></button>
+</div>
+<% } %>
+
+<style>
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .alert {
+    border-radius: 8px;
+  }
+</style>
