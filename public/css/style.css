@@ -189,3 +189,49 @@ font-weight: 400 !important;
  body {
    background-color: #f8f9fa;
  }
+ .equal-height {
+   display: flex !important;
+   flex-direction: column !important;
+   height: 100% !important;
+ }
+ .card-body {
+   flex-grow: 1 !important; 
+ }
+ .card {
+   display: flex !important;
+   flex-direction: column !important;
+   height: 100% !important;
+ }
+
+ .testimonial-card {
+   padding: 20px !important;
+   border: 1px solid #ddd !important;
+   border-radius: 10px !important;
+   background-color: #f8f9fa !important;
+ }
+ .testimonial-img {
+   width: 100px !important;
+   height: 100px !important;
+   object-fit: cover !important;
+ }
+ .testimonial-name {
+   font-size: 1.2rem !important;
+   font-weight: bold !important;
+ }
+ .testimonial-text {
+   font-size: 1rem !important;
+   font-style: italic !important;
+   color: #555 !important;
+ }
+ .carousel-control-prev-icon,
+ .carousel-control-next-icon {
+   background-color: black !important;
+ }
+ .carousel-control-prev,
+  .carousel-control-next {
+    color: black !important;
+  }
+  .carousel-control-prev-icon:hover,
+  .carousel-control-next-icon:hover {
+    background-color: #333 !important; /* Darker black on hover */
+  }
