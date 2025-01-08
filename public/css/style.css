@@ -98,3 +98,70 @@ font-weight: 400 !important;
    padding-right: 0;
 }
 
+.fade-in {
+   opacity: 0;
+   animation: fadeIn 2s ease-out forwards;
+ }
+
+ /* Fade-in effect */
+ @keyframes fadeIn {
+   to {
+     opacity: 1;
+   }
+ }
+
+ /* Custom slide-in animation for the paragraph */
+ .slide-in {
+   transform: translateX(-100%);
+   animation: slideIn 1.5s ease-out forwards;
+ }
+
+ /* Slide-in effect */
+ @keyframes slideIn {
+   to {
+     transform: translateX(0);
+   }
+ }
+
+ /* Custom bounce-in animation for the button */
+ .bounce-in {
+   opacity: 0;
+   animation: bounce 1s ease-out forwards;
+ }
+
+ /* Bounce-in effect */
+ @keyframes bounce {
+   0% {
+     transform: translateY(20px);
+     opacity: 0;
+   }
+   50% {
+     transform: translateY(-10px);
+   }
+   100% {
+     transform: translateY(0);
+     opacity: 1;
+   }
+ }
+
+ /* Additional custom styling */
+ body {
+   background-color: #f8f9fa;
+ }
+
+ .container {
+   background-color: #ffffff;
+   padding: 20px;
+   border-radius: 8px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .btn-primary {
+   background-color: #fe424d !important;
+   border-color: #84464a !important;
+ }
+
+ .btn-primary:hover {
+   background-color:#84464a !important ;
+   border-color: #fe424d !important;
+ }
