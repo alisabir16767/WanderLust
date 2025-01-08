@@ -6,6 +6,18 @@ const { listingSchema } = require("../schema.js");
 const Listing = require("../models/listing");
 const Review = require("../models/review");
 const { isLoggedIn } = require("../middleware");
+const multer = require("multer");
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // Specify the destination folder
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`); // Create a unique filename
+  },
+});
+const upload = multer({ storage });
 
 // Validation middleware for Listing
 const validateListing = (req, res, next) => {
@@ -32,21 +44,25 @@ router.get("/new", isLoggedIn, (req, res) => {
   res.render("listings/new");
 });
 
-// Create route (Create new listing with owner set to logged-in user)
+// Create route (Create new listing with file upload)
 router.post(
   "/",
   isLoggedIn,
+  upload.single("image"), // Handle single file upload
   validateListing,
   wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
     newListing.owner = req.user._id; // Set the owner to the logged-in user
+    if (req.file) {
+      newListing.image = req.file.path; // Save the uploaded file path
+    }
     await newListing.save();
     req.flash("success", "New listing created");
     res.redirect("/listings");
   })
 );
 
-// Edit route (Check if the logged-in user is the owner)
+// Edit route (Render form to edit listing)
 router.get(
   "/:id/edit",
   isLoggedIn,
@@ -66,10 +82,11 @@ router.get(
   })
 );
 
-// Update route (Only allow the owner to update the listing)
+// Update route (Update listing with file upload)
 router.put(
-  "/:id/set-owner",
-  isLoggedIn, // Ensure user is logged in
+  "/:id",
+  isLoggedIn,
+  upload.single("image"), // Handle single file upload
   wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
@@ -79,11 +96,18 @@ router.put(
       return res.redirect("/listings");
     }
 
-    // Set the owner to the logged-in user
-    listing.owner = req.user._id;
-    await listing.save();
+    if (!listing.owner.equals(req.user._id)) {
+      req.flash("error", "You do not have permission to update this listing.");
+      return res.redirect("/listings");
+    }
 
-    req.flash("success", "Owner updated for the listing");
+    const updatedData = req.body.listing;
+    if (req.file) {
+      updatedData.image = req.file.path; // Update the image path
+    }
+    await Listing.findByIdAndUpdate(id, updatedData);
+
+    req.flash("success", "Listing updated successfully");
     res.redirect(`/listings/${id}`);
   })
 );
@@ -120,7 +144,6 @@ router.get(
       req.flash("error", "The listing you requested does not exist!");
       return res.redirect("/listings");
     }
-    console.log(listing);
 
     res.render("listings/show", { listing });
   })
