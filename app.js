@@ -35,21 +35,6 @@ const sessionOptions = {
   },
 };
 
-app.get("/", (req, res) => {
-  res.send("Hi, I am root");
-});
-
-app.use(cookieParser());
-app.engine("ejs", ejsMate);
-app.use(methodOverride("_method"));
-app.use(session(sessionOptions)); // Using MongoDB-backed sessions
-app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
 // MongoDB connection URL from .env
 const MONGO_URL = process.env.MONGO_URL;
 async function main() {
@@ -61,17 +46,36 @@ main().catch((err) => {
   console.log(err);
 });
 
+// Set view engine to EJS and use ejsMate
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
+
+// Middlewares
+app.use(cookieParser());
+app.use(methodOverride("_method"));
+app.use(session(sessionOptions)); // Using MongoDB-backed sessions
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+// Use static files (CSS, JS, etc.)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "/public")));
 
+// Flash message and user data middleware
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currUser = req.user;
-
   next();
+});
+
+app.get("/", (req, res) => {
+  res.render("home");
 });
 
 // Routes
@@ -79,10 +83,12 @@ app.use("/listings", listingsRoute);
 app.use("/listings/:id/review", reviewsRoute);
 app.use("/user", userRoute);
 
+// Handle 404 errors
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
 
+// Error handling middleware
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "An unexpected error occurred" } = err;
   res.status(statusCode).render("error.ejs", { message });
