@@ -165,3 +165,27 @@ font-weight: 400 !important;
    background-color:#84464a !important ;
    border-color: #fe424d !important;
  }
+
+ .scrolling-image {
+   overflow: hidden;
+   width: 100%;
+   display: flex; /* Use flexbox for equal spacing */
+   justify-content: space-evenly; /* Distribute the space evenly between the images */
+   align-items: center; /* Align images vertically in the center */
+ }
+ .scrolling-img {
+   height: 100px; /* Adjust based on your image's height */
+   margin: 0 15px; /* Adds space between each image */
+   animation: scroll-left 10s linear infinite;
+ }
+ @keyframes scroll-left {
+   0% {
+     transform: translateX(100%);
+   }
+   100% {
+     transform: translateX(-100%);
+   }
+ }
+ body {
+   background-color: #f8f9fa;
+ }
