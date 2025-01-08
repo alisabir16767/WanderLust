@@ -4,7 +4,7 @@ Here’s a README with animation elements using markdown to make it engaging:
 
 # Project Title
 
-Welcome to this web application! 🎉 This is a full-stack project built with Node.js, Express, MongoDB, and EJS. It includes user authentication, session management, CRUD operations, and more.
+Wanderlust is a travel-based platform inspired by Airbnb, where users can browse and book various listings, leave reviews, and manage their profiles. The website allows users to explore different locations, book accommodations, and interact with the community.
 
 ## 🛠️ Technologies Used
 
