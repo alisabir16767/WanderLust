@@ -14,17 +14,24 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
+const MongoStore = require("connect-mongo"); // Import connect-mongo
 
 require("dotenv").config(); // Load environment variables from .env file
 
+// Use MongoDB for session storage
 const sessionOptions = {
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGO_URL, // Use MongoDB connection URL from .env
+    ttl: 7 * 24 * 60 * 60, // Session TTL (Time to Live) for 1 week
+    autoRemove: "native", // Automatically remove expired sessions
+  }),
   secret: process.env.SESSION_SECRET, // Use the secret from .env
   resave: false,
   saveUninitialized: true,
   cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // Cookie expires in 1 week
+    maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie max age (1 week)
+    httpOnly: true, // Make the cookie HTTP-only for security
   },
 };
 
@@ -35,7 +42,7 @@ app.get("/", (req, res) => {
 app.use(cookieParser());
 app.engine("ejs", ejsMate);
 app.use(methodOverride("_method"));
-app.use(session(sessionOptions));
+app.use(session(sessionOptions)); // Using MongoDB-backed sessions
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -43,7 +50,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Use the MONGO_URL from .env
+// MongoDB connection URL from .env
 const MONGO_URL = process.env.MONGO_URL;
 async function main() {
   await mongoose.connect(MONGO_URL);
