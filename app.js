@@ -71,6 +71,9 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.render("home");
 });
+app.get("/about", (req, res) => {
+  res.render("aboutUs");
+});
 
 // Routes
 app.use("/listings", listingsRoute);

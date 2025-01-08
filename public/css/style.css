@@ -235,3 +235,58 @@ font-weight: 400 !important;
   .carousel-control-next-icon:hover {
     background-color: #333 !important; /* Darker black on hover */
   }
+
+  .section-heading {
+   font-size: 2.5rem !important;
+   font-weight: bold !important;
+   text-align: center !important;
+   margin-bottom: 30px !important;
+   color: #2c3e50 !important;
+   animation: fadeIn 1s ease-in-out !important;
+ }
+
+ .section-subheading {
+   font-size: 1.2rem !important;
+   text-align: center !important;
+   margin-bottom: 50px !important;
+   color: #7f8c8d !important;
+ }
+ .about-text p {
+   font-size: 1.1rem !important;
+   line-height: 1.8 !important;
+   text-align: center !important;
+   color: #34495e !important;
+ }
+
+ .mission-heading, .vision-heading {
+   color: #2980b9 !important;
+   font-size: 1.8rem !important;
+   margin-top: 20px !important;
+ }
+ .mission-text, .vision-text {
+   font-size: 1.1rem !important;
+   color: #7f8c8d !important;
+ }
+ .team-member {
+   text-align: center !important;
+   margin-bottom: 30px !important;
+   transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+ }
+ .team-member:hover {
+   transform: translateY(-10px) !important;
+   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+ }
+ .team-img {
+   width: 200px !important;
+   height: 200px !important;
+   border-radius: 50% !important;
+   object-fit: cover !important;
+   margin-bottom: 15px !important;
+   transition: transform 0.3s ease !important;
+ }
+ .team-member h5 {
+   font-size: 1.4rem !important;
+   margin-top: 10px !important;
+   color: #2c3e50 !important;
+ }
+ 
