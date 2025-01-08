@@ -15,8 +15,10 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 
+require("dotenv").config(); // Load environment variables from .env file
+
 const sessionOptions = {
-  secret: "mysupersecretcode",
+  secret: process.env.SESSION_SECRET, // Use the secret from .env
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -41,7 +43,8 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+// Use the MONGO_URL from .env
+const MONGO_URL = process.env.MONGO_URL;
 async function main() {
   await mongoose.connect(MONGO_URL);
   console.log("Connected to DB");
@@ -64,18 +67,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.get("/demouser",async(req,res)=>{
-//    let fakeUser=new User({
-//       email:"alisabir167167@gmail.com",
-//       username:"sabir Ali",
-
-//    })
-//    let registeredUser=await User.register(fakeUser,"helloword");
-//    res.send(registeredUser);
-// })
-
 // Routes
-
 app.use("/listings", listingsRoute);
 app.use("/listings/:id/review", reviewsRoute);
 app.use("/user", userRoute);
@@ -89,6 +81,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error.ejs", { message });
 });
 
-app.listen(8080, () => {
-  console.log("Listening on port 8080");
+// Use the PORT from .env (default to 8080 if not set)
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
 });
