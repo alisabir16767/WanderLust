@@ -14,28 +14,26 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
-const MongoStore = require("connect-mongo"); // Import connect-mongo
+const MongoStore = require("connect-mongo");
 
-require("dotenv").config(); // Load environment variables from .env file
+require("dotenv").config();
 
-// Use MongoDB for session storage
 const sessionOptions = {
   store: MongoStore.create({
-    mongoUrl: process.env.MONGO_URL, // Use MongoDB connection URL from .env
-    ttl: 7 * 24 * 60 * 60, // Session TTL (Time to Live) for 1 week
-    autoRemove: "native", // Automatically remove expired sessions
+    mongoUrl: process.env.MONGO_URL,
+    ttl: 7 * 24 * 60 * 60,
+    autoRemove: "native",
   }),
-  secret: process.env.SESSION_SECRET, // Use the secret from .env
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // Cookie expires in 1 week
-    maxAge: 7 * 24 * 60 * 60 * 1000, // Cookie max age (1 week)
-    httpOnly: true, // Make the cookie HTTP-only for security
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
   },
 };
 
-// MongoDB connection URL from .env
 const MONGO_URL = process.env.MONGO_URL;
 async function main() {
   await mongoose.connect(MONGO_URL);
@@ -46,15 +44,13 @@ main().catch((err) => {
   console.log(err);
 });
 
-// Set view engine to EJS and use ejsMate
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
 
-// Middlewares
 app.use(cookieParser());
 app.use(methodOverride("_method"));
-app.use(session(sessionOptions)); // Using MongoDB-backed sessions
+app.use(session(sessionOptions));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -62,11 +58,9 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Use static files (CSS, JS, etc.)
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "/public")));
 
-// Flash message and user data middleware
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
