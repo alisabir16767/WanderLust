@@ -1,3 +1,4 @@
+// listingsRoutes.js
 const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
@@ -7,17 +8,9 @@ const Listing = require("../models/listing");
 const Review = require("../models/review");
 const { isLoggedIn } = require("../middleware");
 const multer = require("multer");
+const { storage } = require("../config/cloudConfig.js");
 
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Specify the destination folder
-  },
-  filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`); // Create a unique filename
-  },
-});
-const upload = multer({ storage });
+const upload = multer({ storage }); // Use Cloudinary storage
 
 // Validation middleware for Listing
 const validateListing = (req, res, next) => {
@@ -52,9 +45,10 @@ router.post(
   validateListing,
   wrapAsync(async (req, res, next) => {
     const newListing = new Listing(req.body.listing);
+
     newListing.owner = req.user._id; // Set the owner to the logged-in user
     if (req.file) {
-      newListing.image = req.file.path; // Save the uploaded file path
+      newListing.image = req.file.path; // Save the uploaded file URL from Cloudinary
     }
     await newListing.save();
     req.flash("success", "New listing created");
@@ -103,7 +97,7 @@ router.put(
 
     const updatedData = req.body.listing;
     if (req.file) {
-      updatedData.image = req.file.path; // Update the image path
+      updatedData.image = req.file.path; // Update the image URL from Cloudinary
     }
     await Listing.findByIdAndUpdate(id, updatedData);
 
