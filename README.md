@@ -2,7 +2,7 @@ Here’s a README with animation elements using markdown to make it engaging:
 
 ---
 
-# Project Title
+# WanderLust
 
 Wanderlust is a travel-based platform inspired by Airbnb, where users can browse and book various listings, leave reviews, and manage their profiles. The website allows users to explore different locations, book accommodations, and interact with the community.
 
