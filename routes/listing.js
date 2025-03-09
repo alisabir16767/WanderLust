@@ -8,7 +8,7 @@ const Listing = require("../models/listing");
 const Review = require("../models/review");
 const { isLoggedIn } = require("../middleware");
 const multer = require("multer");
-const { storage } = require("../config/cloudConfig.js");
+const { storage } = require("../config/cloudConfig.js"); //location
 
 const upload = multer({ storage }); // Use Cloudinary storage
 
