@@ -1,4 +1,87 @@
 <% layout('/layouts/boilerplate.ejs') -%>
+<style>
+  .min-vh-100 {
+    background-image: url("/path/to/your/background-image.jpg"); /* Replace with your image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .login-card {
+    width: 100%;
+    max-width: 400px;
+    background: rgba(
+      255,
+      255,
+      255,
+      0.95
+    ); /* Slightly transparent white background */
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    animation: fadeIn 0.5s ease-in-out; /* Fade-in animation */
+  }
+
+  .login-card h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Subtle text shadow */
+  }
+
+  .form-control {
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 8px rgba(40, 167, 69, 0.4);
+  }
+
+  .btn-success {
+    background-color: #28a745;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-2px); /* Slight lift on hover */
+  }
+
+  /* Fade-in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 576px) {
+    .login-card {
+      padding: 1.5rem;
+    }
+
+    .login-card h1 {
+      font-size: 1.75rem;
+    }
+  }
+</style>
+
 <div class="d-flex justify-content-center align-items-center min-vh-100">
   <div class="card login-card shadow-lg p-3 mb-5 bg-body rounded">
     <div class="card-body">
