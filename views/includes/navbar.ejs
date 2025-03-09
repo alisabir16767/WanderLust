@@ -1,4 +1,35 @@
-<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+<style>
+  /* Smooth Search Bar Animation */
+  .search-input {
+    width: 200px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .search-input:focus {
+    width: 300px;
+  }
+
+  /* Button Hover Effect */
+  .search-btn {
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .search-btn:hover {
+    transform: scale(1.1);
+  }
+
+  /* Responsive Search Bar */
+  @media (max-width: 768px) {
+    .search-input {
+      width: 150px;
+    }
+    .search-input:focus {
+      width: 200px;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
     <!-- Brand/logo -->
     <a class="navbar-brand" href="/">
@@ -10,33 +41,60 @@
       class="navbar-toggler"
       type="button"
       data-bs-toggle="collapse"
-      data-bs-target="#navbarNavAltMarkup"
-      aria-controls="navbarNavAltMarkup"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar links -->
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav">
-        <a class="nav-link active" href="/">Home</a>
-        <a class="nav-link" href="/listings">All listings</a>
-        <a class="nav-link" href="/listings/new">Add new listings</a>
-        <a class="nav-link" href="/about">About Us</a>
-        <!-- About Us link added -->
-      </div>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-      <div class="navbar-nav ms-auto">
-        <% if(!currUser) {%>
-        <a class="nav-link active" href="/user/signup">Sign up</a>
-        <a class="nav-link" href="/user/login">Log in</a>
-        <% } %> <% if(currUser) {%>
-        <a class="nav-link" href="/user/logout">Log out</a>
+    <!-- Navbar Content -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/listings">Explore</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/listings/new">Add new listings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About Us</a>
+        </li>
+      </ul>
+
+      <!-- Search Bar (Responsive) -->
+      <form class="d-flex mx-auto my-2 my-lg-0" action="/search" method="GET">
+        <input
+          class="form-control me-2 search-input"
+          type="search"
+          placeholder="Search listings..."
+          aria-label="Search"
+          name="q"
+        />
+        <button class="btn btn-outline-primary search-btn" type="submit">
+          <i class="fa-solid fa-search"></i>
+        </button>
+      </form>
+
+      <!-- User Auth Links -->
+      <ul class="navbar-nav ms-auto">
+        <% if (!currUser) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/signup">Sign up</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/login">Log in</a>
+        </li>
+        <% } %> <% if (currUser) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/user/logout">Log out</a>
+        </li>
         <% } %>
-      </div>
+      </ul>
     </div>
   </div>
 </nav>

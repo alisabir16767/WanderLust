@@ -1,11 +1,107 @@
 <% layout('/layouts/boilerplate.ejs') -%>
 <body>
   <div class="container mb-3">
-    <h3 class="my-4 text-center">All Listings</h3>
+    <!-- Filters Section -->
+    <div
+      id="filters"
+      class="d-flex flex-wrap align-items-center gap-3 p-3 bg-light rounded shadow-sm"
+    >
+      <button
+        class="filter btn btn-outline-primary d-flex align-items-center gap-2"
+        data-filter="trending"
+      >
+        <i class="fa-solid fa-fire"></i> Trending
+      </button>
 
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      <button
+        class="filter btn btn-outline-success d-flex align-items-center gap-2"
+        data-filter="low-to-high"
+      >
+        <i class="fa-solid fa-arrow-up"></i> Price: Low to High
+      </button>
+
+      <button
+        class="filter btn btn-outline-danger d-flex align-items-center gap-2"
+        data-filter="high-to-low"
+      >
+        <i class="fa-solid fa-arrow-down"></i> Price: High to Low
+      </button>
+
+      <select class="form-select form-select-sm w-auto">
+        <option selected>🏷️ Category</option>
+        <option value="beachfront">Beachfront</option>
+        <option value="mountain">Mountain</option>
+        <option value="city">City</option>
+        <option value="countryside">Countryside</option>
+      </select>
+      <!-- Location Filter -->
+      <select class="form-select form-select-sm w-auto">
+        <option selected>📍 Location</option>
+        <option value="paris">Paris</option>
+        <option value="new-york">New York</option>
+        <option value="tokyo">Tokyo</option>
+        <option value="london">London</option>
+      </select>
+      <!-- Rating Filter -->
+      <select class="form-select form-select-sm w-auto">
+        <option selected>⭐ Rating</option>
+        <option value="5">5 Stars</option>
+        <option value="4">4+ Stars</option>
+        <option value="3">3+ Stars</option>
+      </select>
+      <!-- Price Range Filter -->
+      <select class="form-select form-select-sm w-auto">
+        <option selected>💰 Price Range</option>
+        <option value="0-500">&#8377; 0 - 500</option>
+        <option value="500-2000">&#8377; 500 - 2000</option>
+        <option value="2000-5000">&#8377; 2000 - 5000</option>
+        <option value="5000+">&#8377; 5000+</option>
+      </select>
+      <!-- Property Type Filter -->
+      <select class="form-select form-select-sm w-auto">
+        <option selected>🏡 Property Type</option>
+        <option value="apartment">Apartment</option>
+        <option value="house">House</option>
+        <option value="villa">Villa</option>
+        <option value="cabin">Cabin</option>
+      </select>
+      <!-- Amenities Filter -->
+      <select class="form-select form-select-sm w-auto">
+        <option selected>🛏️ Amenities</option>
+        <option value="wifi">WiFi</option>
+        <option value="parking">Free Parking</option>
+        <option value="pool">Swimming Pool</option>
+        <option value="ac">Air Conditioning</option>
+      </select>
+      <!-- Guest Capacity Filter -->
+      <select class="form-select form-select-sm w-auto">
+        <option selected>👥 Guest Capacity</option>
+        <option value="1">1 Guest</option>
+        <option value="2">2 Guests</option>
+        <option value="4">4 Guests</option>
+        <option value="6+">6+ Guests</option>
+      </select>
+      <!-- Instant Book Filter -->
+      <button class="btn btn-outline-dark d-flex align-items-center gap-2">
+        <i class="fa-solid fa-bolt"></i> Instant Book
+      </button>
+
+      <!-- Tax Switch -->
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="taxSwitch" />
+        <label class="form-check-label" for="taxSwitch"
+          >Display total after Taxes</label
+        >
+      </div>
+    </div>
+
+    <!-- Listings Section -->
+    <div
+      id="listingContainer"
+      class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-3"
+    >
       <% for(let listing of allListings) { %>
-      <div class="col">
+      <div class="col listing-item" data-price="<%= listing.price %>">
         <a
           href="/listings/<%=listing._id%>"
           class="listing-link text-decoration-none"
@@ -19,8 +115,12 @@
             />
             <div class="card-body">
               <h5 class="card-title"><%= listing.title %></h5>
-              <p class="card-text text-muted">
-                &#8377;<%=listing.price.toLocaleString("en-IN")%> / night
+              <p
+                class="card-text text-muted price"
+                data-price="<%= listing.price %>"
+              >
+                &#8377;<span><%= listing.price.toLocaleString("en-IN") %></span>
+                / night
               </p>
             </div>
           </div>
@@ -29,4 +129,49 @@
       <% } %>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const taxSwitch = document.getElementById("taxSwitch");
+      const taxRate = 0.12; // 12% tax
+      const prices = document.querySelectorAll(".price");
+      const filters = document.querySelectorAll(".filter");
+      const listingContainer = document.getElementById("listingContainer");
+      let allListings = Array.from(document.querySelectorAll(".listing-item"));
+
+      taxSwitch.addEventListener("change", function () {
+        prices.forEach((priceElem) => {
+          let basePrice = parseFloat(priceElem.dataset.price);
+          let finalPrice = taxSwitch.checked
+            ? basePrice * (1 + taxRate) // Add tax
+            : basePrice; // Base price without tax
+
+          priceElem.innerHTML = `&#8377;<span>${finalPrice.toLocaleString(
+            "en-IN",
+            { minimumFractionDigits: 2 }
+          )}</span> / night`;
+        });
+      });
+
+      filters.forEach((filter) => {
+        filter.addEventListener("click", function () {
+          let filterType = this.dataset.filter;
+          let sortedListings = [...allListings];
+
+          if (filterType === "low-to-high") {
+            sortedListings.sort((a, b) => a.dataset.price - b.dataset.price);
+          } else if (filterType === "high-to-low") {
+            sortedListings.sort((a, b) => b.dataset.price - a.dataset.price);
+          } else if (filterType === "trending") {
+            sortedListings.sort(() => Math.random() - 0.5); // Simulated trending order
+          }
+
+          listingContainer.innerHTML = "";
+          sortedListings.forEach((listing) =>
+            listingContainer.appendChild(listing)
+          );
+        });
+      });
+    });
+  </script>
 </body>

@@ -2,19 +2,17 @@
 
 <div class="container mt-4">
   <div class="row">
-    <div class="col-lg-8 offset-lg-2 mb-3">
+    <div class="col-lg-8 offset-lg-2">
       <div class="p-3 border-bottom">
         <h3 class="text-center mb-4"><%= listing.title %></h3>
 
         <!-- Listing Details Card -->
-        <div
-          class="card mb-4 show-card listing-card mx-auto"
-          style="width: 100%"
-        >
+        <div class="card mb-4 shadow-sm">
           <img
             src="<%= listing.image %>"
-            class="card-img-top show-img img-fluid rounded"
+            class="card-img-top img-fluid rounded-top"
             alt="<%= listing.title %> Image"
+            style="height: 400px; object-fit: cover"
           />
           <div class="card-body">
             <p class="card-text">
@@ -34,25 +32,25 @@
         </div>
 
         <!-- Edit and Delete Buttons -->
-        <div class="d-flex justify-content-between mb-4">
+        <div class="d-flex justify-content-between mb-4 flex-wrap gap-2">
           <a
             href="/listings/<%= listing._id %>/edit"
-            class="btn btn-dark edit-btn col-md-4 col-sm-12 mb-2 mb-md-0"
+            class="btn btn-dark btn-lg flex-grow-1"
             >Edit</a
           >
           <form
             action="/listings/<%= listing._id %>?_method=DELETE"
             method="POST"
-            class="col-md-4 col-sm-12"
+            class="flex-grow-1"
           >
-            <button type="submit" class="btn btn-dark del-btn w-100">
+            <button type="submit" class="btn btn-danger btn-lg w-100">
               Delete
             </button>
           </form>
         </div>
 
         <!-- Review Form -->
-        <div class="mt-5">
+        <div class="mt-5 p-4 bg-light rounded">
           <h4 class="text-center mb-3">Leave a Review</h4>
           <hr />
           <form
@@ -69,6 +67,7 @@
                   id="rate1"
                   name="review[rating]"
                   value="1"
+                  required
                 />
                 <label for="rate1" title="Terrible">1 star</label>
                 <input
@@ -114,43 +113,48 @@
               ></textarea>
               <div class="invalid-feedback">Please add some feedback.</div>
             </div>
-            <button type="submit" class="btn btn-outline-dark w-100">
-              Submit
-            </button>
+            <button type="submit" class="btn btn-dark w-100">Submit</button>
           </form>
         </div>
 
         <!-- Reviews Section -->
-        <hr class="my-4" />
-        <h4 class="text-center mb-3">All Reviews</h4>
-        <div class="row">
-          <% if (listing.reviews.length > 0) { %> <% for (let review of
-          listing.reviews) { %>
-          <div class="card col-md-5 col-sm-12 mb-3 mx-2">
-            <div class="card-body">
-              <h5><%= review.author %></h5>
-              <p class="card-text"><%= review.comment %></p>
-              <p class="card-text">
-                <strong>Rating:</strong>
-                <span
-                  class="starability-result"
-                  data-rating="<%= review.rating %>"
-                ></span>
-              </p>
+        <div class="mt-5">
+          <h4 class="text-center mb-3">All Reviews</h4>
+          <hr />
+          <div class="row row-cols-1 row-cols-md-2 g-4">
+            <% if (listing.reviews.length > 0) { %> <% for (let review of
+            listing.reviews) { %>
+            <div class="col">
+              <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title"><%= review.author %></h5>
+                  <p class="card-text"><%= review.comment %></p>
+                  <p class="card-text">
+                    <strong>Rating:</strong>
+                    <span
+                      class="starability-result"
+                      data-rating="<%= review.rating %>"
+                    ></span>
+                  </p>
+                </div>
+                <div class="card-footer bg-transparent">
+                  <form
+                    action="/listings/<%= listing._id %>/review/<%= review._id %>?_method=DELETE"
+                    method="POST"
+                  >
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </div>
             </div>
-            <form
-              action="/listings/<%= listing._id %>/review/<%= review._id %>?_method=DELETE"
-              method="POST"
-              class="mb-3"
-            >
-              <button type="submit" class="btn btn-sm btn-dark">Delete</button>
-            </form>
+            <% } %> <% } else { %>
+            <p class="text-center text-muted">
+              No reviews yet. Be the first to leave a review!
+            </p>
+            <% } %>
           </div>
-          <% } %> <% } else { %>
-          <p class="text-center">
-            No reviews yet. Be the first to leave a review!
-          </p>
-          <% } %>
         </div>
       </div>
     </div>
