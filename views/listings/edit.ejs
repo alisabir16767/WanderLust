@@ -8,6 +8,7 @@
         method="POST"
         novalidate
         class="needs-validation"
+        enctype="multipart/form-data"
       >
         <div class="mb-3">
           <label for="title" class="form-label">Title:</label>
@@ -40,8 +41,8 @@
         <div class="mb-3">
           <label for="image" class="form-label">Image:</label>
           <input
-            type="text"
-            name="listing[image]"
+            type="file"
+            name="image"
             id="image"
             value="<%= listing && listing.image %>"
             class="form-control"
