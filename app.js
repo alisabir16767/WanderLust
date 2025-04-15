@@ -74,7 +74,7 @@ app.get("/about", (req, res) => {
   res.render("aboutUs");
 });
 
-// Routes
+// ROUTES
 app.use("/listings", listingsRoute);
 app.use("/listings/:id/review", reviewsRoute);
 app.use("/user", userRoute);
