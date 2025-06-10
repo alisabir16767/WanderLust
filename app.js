@@ -79,18 +79,15 @@ app.use("/listings", listingsRoute);
 app.use("/listings/:id/review", reviewsRoute);
 app.use("/user", userRoute);
 
-// Handle 404 errors
 app.all("*", (req, res, next) => {
   next(new ExpressError(404, "Page Not Found"));
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "An unexpected error occurred" } = err;
   res.status(statusCode).render("error.ejs", { message });
 });
 
-// Use the PORT from .env (default to 8080 if not set)
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
