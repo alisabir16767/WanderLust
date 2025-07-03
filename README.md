@@ -97,44 +97,7 @@ The application uses a custom error handler `ExpressError` to handle errors grac
 - **404** - Page Not Found (Custom error page rendered)
 - **500** - Internal Server Error (Generic error message)
 
----
 
-### ✨ Animations
-
-1. **Loading Spinners**: A loading spinner can be shown while the page loads.
-
-   ```html
-   <div class="spinner">
-     <div class="spinner-bounce"></div>
-   </div>
-   ```
-
-2. **Button Hover Effect**: Add this CSS to animate buttons when hovered.
-
-   ```css
-   .btn {
-     transition: all 0.3s ease;
-   }
-   .btn:hover {
-     transform: scale(1.1);
-     background-color: #5cb85c;
-   }
-   ```
-
-3. **Flash Message Fade In**: This CSS can make flash messages appear smoothly:
-   ```css
-   .flash-message {
-     animation: fadeIn 2s ease-in-out;
-   }
-   @keyframes fadeIn {
-     0% {
-       opacity: 0;
-     }
-     100% {
-       opacity: 1;
-     }
-   }
-   ```
 
 ## 💡 Usage
 
